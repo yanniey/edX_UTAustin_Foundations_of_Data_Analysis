@@ -3,26 +3,23 @@ Here is the code you will use:
 library(SDSFoundations)
 film<-FilmData
 # Show how many films are in each group
-table(film$Rating)
+table(film$Studio)
 
-Question 1
+#Question 1
 
-# Calculate avg film budget of each group
-aggregate(Budget~Rating,film,mean)
+sony <- subset(film,film$Studio =="Sony")
+fox <-subset(film, film$Studio =="Fox")
 
-# Calculate sd of film budget within each group
-aggregate(Budget~Rating,film,sd)
 
-# Visualize the group means and variability
-boxplot(film$Budget~film$Rating, main= "Film Budgets by Rating",
-        ylab= "Budget", xlab= "MPAA Rating")
+mean(sony$Days)
+mean(fox$Days)
 
-# Run ANOVA
-modelbud <- aov(film$Budget~film$Rating)
-summary(modelbud)
+days<-aov(Days ~ Studio, data=film)
+summary(days)
 
-# Run post-hoc test if F statistic is significant
-TukeyHSD(modelbud)
+TukeyHSD(days)
+plot(TukeyHSD(days))
+
 
 Question 2
 
