@@ -26,15 +26,15 @@ Question 2
 # Calculate avg IMDB score of each group
 dom<-aggregate(Gross.Dom~Studio,film,mean)
 all<-aggregate(Gross~Studio,film,mean)
+sd<-aggregate(Gross~Studio,film,sd)
 
 percentage<-all
 percentage[,2]<-dom[,2]/all[,2]
 
 percentage
 
-
 # Run ANOVA
-q2 <- aov(film$IMDB~film$Rating)
+q2 <- aov((film$Gross.Dom/film$Gross)~film$Studio)
 summary(q2)
 
 # Run post-hod text if F statistic is significant
