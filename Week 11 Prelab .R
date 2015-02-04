@@ -24,18 +24,18 @@ plot(TukeyHSD(days))
 Question 2
 
 # Calculate avg IMDB score of each group
-aggregate(IMDB~Rating,film,mean)
+dom<-aggregate(Gross.Dom~Studio,film,mean)
+all<-aggregate(Gross~Studio,film,mean)
 
-#Calculate sd of IMDB scores within each group
-aggregate(IMDB~Rating,film,sd)
+percentage<-all
+percentage[,2]<-dom[,2]/all[,2]
 
-# Visualize the group means and variability
-boxplot(film$IMDB~film$Rating, main= "IMDB Scores by Rating",
-        ylab= "IMDB Score", xlab= "MPAA Rating")
+percentage
+
 
 # Run ANOVA
-modelscore <- aov(film$IMDB~film$Rating)
-summary(modelscore)
+q2 <- aov(film$IMDB~film$Rating)
+summary(q2)
 
 # Run post-hod text if F statistic is significant
-TukeyHSD(modelscore)
+TukeyHSD(q2)
