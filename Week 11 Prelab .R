@@ -1,5 +1,7 @@
 Here is the code you will use:
-        
+
+library(SDSFoundations)
+film<-FilmData
 # Show how many films are in each group
 table(film$Rating)
 
