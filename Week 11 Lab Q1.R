@@ -3,24 +3,31 @@
 library(SDSFoundations)
 film<-FilmData
 
-# Q1
-table(film$Studio)
-
-# Q2 
-sony<-film[film$Studio=="Sony",]
-mean(sony$Days)
-
-fox<-film[film$Studio=="Fox",]
-mean(fox$Days)
+# Q1a
+library("dplyr", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
+film$Budget_cat<-NA
+film$Budget_cat <-ifelse(film$Budget<100,"low-budget",ifelse(film$Budget<150,"medium-budget","high-budget"))
+low_budget<-filter(film, film$Budget<100)
+medium_budget<-filter(film,film$Budget>=100,film$Budget<150)
+high_budget<-filter(film,film$Budget>=150)
 
 
-# Visualize the group means and variability
-boxplot(film$Budget~film$Rating, main= "Film Budgets by Rating",
-        ylab= "Budget", xlab= "MPAA Rating")
+# Q1b
+low_mean<-mean(low_budget$Pct.Dom)
+medium_mean<-mean(medium_budget$Pct.Dom)
+high_mean<-mean(high_budget$Pct.Dom)
 
-# Run ANOVA
-modelbud <- aov(film$Budget~film$Rating)
-summary(modelbud)
+low_mean
+medium_mean
+high_mean
+
+# Q1c~f Run ANOVA
+budget_pct <- aov(film$Pct.Dom~film$Budget_cat)
+summary(budget_pct)
+
+# Q1g 
+TukeyHSD(budget_pct)
+
 
 # Run post-hoc test if F statistic is significant
 TukeyHSD(modelbud)
